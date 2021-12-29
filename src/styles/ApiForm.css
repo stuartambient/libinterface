@@ -1,0 +1,56 @@
+.api-console {
+  grid-column: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  background-color: cornsilk;
+}
+
+h3 {
+  text-align: center;
+}
+
+.view,
+.updateform {
+  display: grid;
+  justify-items: center;
+}
+
+.viewform {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+}
+
+button:not(.searchparambtn) {
+  margin: 1em;
+  height: 3em;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+input {
+  margin-top: 0.4em;
+}
+
+.perpage {
+  width: 40%;
+  align-self: center;
+}
+
+input {
+  height: 3em;
+  border-radius: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.searchparambtn {
+  margin-top: 1em;
+  height: 2em;
+  width: 50%;
+  align-self: center;
+  border: 1px solid green;
+  border-radius: 5px;
+  background-color: transparent;
+}

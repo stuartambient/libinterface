@@ -1,0 +1,44 @@
+.results {
+  grid-column: 2 / 3;
+  overflow-y: scroll;
+}
+
+.item {
+  height: 3em;
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid black;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.post {
+  background-color: #eee;
+  margin: 2rem;
+  padding: 1rem;
+}
+.pagination {
+  margin: 1rem auto;
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 50%;
+  background-color: blue;
+  height: 2em;
+  color: white;
+}
+.active {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0 3px;
+  outline: none;
+  background-color: red;
+}
+
+.next,
+.previous,
+.page {
+  cursor: pointer;
+}

@@ -1,0 +1,66 @@
+Element - anything inside angle brackets
+
+Components - return elements
+
+Props, defaultProps, proptypes - {
+    Greeting.defaultProps = {
+      name: "Guest"
+  };
+}
+
+Rest - ({name, ...restProps})
+Spread - function Component({name, ...rest}) {
+    return <div {...restProps}Blah</div> // using spread
+}
+
+Separate non-dom (component related) props from dom-related props
+i.e ({name, ...platformProps})
+return <div {...platformProps}>{name}</> 
+platform props i.e. class, id, style, etc would then get written to the div.
+
+
+Merge destructured props with other values
+(not overiding say a class prop)
+let classNames = ['btn', className].join(' ')
+or use filter to guard against undefined values
+let classNames = ['btn', className].filter(Boolean).join(' ')
+return <button className={classNames} {...props} />
+// beward of empty objects being passed in.  Better to use
+classnames or clsx packages.
+
+conditional rendering - there is also use of the || operator
+condition || <span>Rendered when 'falsy'<span>
+
+children - using arrays are common with passing children
+<div>{['Hello', <span>World</span>, '!']}
+
+Functions as children / Render prop - 
+passing functions as children which return a value or condition back 
+to the calling component
+* Some developers prefer HOC's instead, it's a matter of preference
+
+Children pass-through - depending best to treat children as an 
+opaque data type and use React.Children
+return React.Children.only(this.props.children)
+
+'Proxy components" - uses a single component i.e. button but 
+allows for variation by the calling component.  Example shows adding
+a classname to the base btn classname.
+
+'Event switch' - for components with lots of event handlers consider
+one handler with a i.e. switch statement.  Single event components use 
+direct call with => funcitons.  i.e. onClick={(e) => handleClick()}
+
+"Layout Component" - if a component does not need to be rerendered it
+can be set to false using 'ShouldComponentUpdate' but this maybe a class
+Component method.  Not sure if there is a hooks equivalent.
+
+"Container component" - A container that does data fetching
+then rerenders it's corresponding subcomponent.
+
+
+
+
+
+
+

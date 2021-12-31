@@ -1,12 +1,12 @@
 import React, { useState, useReducer } from 'react';
-import useLibrary from '../hooks/useLibrary';
+/* import useLibrary from '../hooks/useLibrary'; */
 
 import '../styles/ApiForm.css';
 
 const ApiForm = props => {
   const [form, setForm] = useState(null);
 
-  const { getData } = useLibrary();
+  /* const { getData } = useLibrary(); */
 
   /*   const { setGetter } = useLibrary('music');
   const [checked, setChecked] = useState(false); */
@@ -34,11 +34,17 @@ const ApiForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (props.getData === false) {
+      props.setGetData(true);
+    }
     /* console.log(e); */
-    getData({
+    /* getData({
       formValues,
       setEntries: props.setEntries,
-    });
+    }); */
+    /* props.setGetData(
+      props.getData === false ? props.setGetData(true) : props.setGetData(false)
+    ); */
   };
 
   return (

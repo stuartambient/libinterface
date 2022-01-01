@@ -13,7 +13,7 @@ const App = () => {
       <div className="container">
         <div className="grid">
           <ApiForm setGetData={setGetData} getData={getData}></ApiForm>
-          {getData === true && <SimpleInfiniteList />}
+          {getData === true && <SimpleInfiniteList start={1} />}
         </div>
       </div>
     </>

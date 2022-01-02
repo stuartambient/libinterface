@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import useInfiniteScroll from 'react-infinite-scroll-hook';
-import useDb from './useDb';
+import React, { useState, useRef, useCallback } from 'react';
+import useDb from '../hooks/useDb';
 import { Results, List, ListItem, Loading } from '../components/Results';
 
 const { loading, items, hasNextPage, error, loadMore } = useDb;

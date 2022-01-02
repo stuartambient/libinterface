@@ -1,28 +1,38 @@
-import React from 'react';
-import Axios from 'axios';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const useDb = () => {
-  const [loading, setLoading] = React.useState(false);
-  const [items, setItems] = React.useState([]);
-  const [hasNextPage, setHasNextPage] = React.useState(true);
-  const [error, setError] = React.useState();
+const useDb = async pageNumber => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  const loadMore = async (page, limit) => {
+  /*   useEffect(() => {
+    setItems([]);
+  }, [query]); */
+
+  useEffect(() => {
     setLoading(true);
-    try {
-      const { data, hasNextPage: newHasNextPage } = await Axios.get(
-        `http://localhost:3001/api/v1/library/music/getTitles?&page=${page}`
-      );
-      setItems(current => [...current, ...data]);
-      setHasNextPage(newHasNextPage);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setError(false);
+    axios({
+      method: 'GET',
+      url: 'http://localhost:3001/api/v1/library/music/getTitles',
+      params: { page: pageNumber },
+    })
+      .then(res => {
+        setItems(prevItems => {
+          return [...prevItems, ...res.data.documents];
+        });
+        setHasMore(res.data.docs.length > 0);
+        setLoading(false);
+        console.log(res.data);
+      })
+      .catch(e => {
+        setError(true);
+      });
+  }, [pageNumber]);
 
-  return { loading, items, hasNextPage, error, loadMore };
+  return { loading, items, hasMore, error };
 };
 
 export default useDb;

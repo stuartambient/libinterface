@@ -1,42 +1,52 @@
 import React, { useState, useRef, useCallback } from 'react';
 import useDb from '../hooks/useDb';
-import { Results, List, ListItem, Loading } from '../components/Results';
+/* import { Results, List, ListItem, Loading } from '../components/Results'; */
+import '../styles/Results.css';
 
-const { loading, items, hasNextPage, error, loadMore } = useDb;
+function InfiniteList() {
+  const [pageNumber, setPageNumber] = useState(0);
 
-function SimpleInfiniteList(props) {
-  const [items, addItems] = useState();
-  const [itemsTotal, setItemsTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
+  const { loading, items, hasMore, error } = useDb(pageNumber);
 
-  const [sentryRef, { rootRef }] = useInfiniteScroll({
-    loading,
-    hasNextPage: hasNextPage(page, 50),
-    onLoadMore: loadMore,
-    // When there is an error, we stop infinite loading.
-    // It can be reactivated by setting "error" state as undefined.
-    /* disabled: !!error, */
-    // `rootMargin` is passed to `IntersectionObserver`.
-    // We can use it to trigger 'onLoadMore' when the sentry comes near to become
-    // visible, instead of becoming fully visible on the screen.
-    /*  rootMargin: '0px 0px 400px 0px', */
-  });
+  const observer = useRef();
+  const lastItemElement = useCallback(
+    node => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPageNumber(prevPageNumber => prevPageNumber + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
 
   return (
-    <Results ref={rootRef}>
-      <List>
-        {items.map(item => (
-          <ListItem key={item.key}>{item.value}</ListItem>
-        ))}
-        {(loading || hasNextPage) && (
-          <ListItem ref={sentryRef}>
-            <Loading />
-          </ListItem>
-        )}
-      </List>
-    </Results>
+    <>
+      <div className="results">
+        {items.map((item, index) => {
+          if (items.length === index + 1) {
+            return (
+              <div className="item" ref={lastItemElement} key={item._id}>
+                {item.name}
+              </div>
+            );
+          } else {
+            return (
+              <div className="item" key={item._id}>
+                {item.name}
+              </div>
+            );
+          }
+        })}
+        <div className="item">{loading && 'Loading...'}</div>
+        <div className="item">{error && 'Error'}</div>
+      </div>
+    </>
   );
 }
 
-export default SimpleInfiniteList;
+export default InfiniteList;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const useDb = async pageNumber => {
+const useDb = pageNumber => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
@@ -21,11 +21,10 @@ const useDb = async pageNumber => {
     })
       .then(res => {
         setItems(prevItems => {
-          return [...prevItems, ...res.data.documents];
+          return [...prevItems, ...res.data];
         });
-        setHasMore(res.data.docs.length > 0);
+        setHasMore(res.data.length > 0);
         setLoading(false);
-        console.log(res.data);
       })
       .catch(e => {
         setError(true);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import ApiForm from './components/ApiForm';
-import SimpleInfiniteList from './hooks/SimpleInfiniteList';
+import InfiniteList from './components/InfiniteList';
 /* import Results from './components/Results'; */
 import './App.css';
 
@@ -13,7 +13,7 @@ const App = () => {
       <div className="container">
         <div className="grid">
           <ApiForm setGetData={setGetData} getData={getData}></ApiForm>
-          {getData === true && <SimpleInfiniteList start={1} />}
+          {getData === true && <InfiniteList />}
         </div>
       </div>
     </>

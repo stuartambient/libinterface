@@ -34,6 +34,8 @@ const ApiForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (formValues.optionalsearch)
+      props.setTextSearch(formValues.optionalsearch);
     if (props.getData === false) {
       props.setGetData(true);
     }
@@ -48,54 +50,53 @@ const ApiForm = props => {
   };
 
   return (
-    <div className="api-console">
+    <div className='api-console'>
       <h3>Preferences</h3>
-      <button id="update" onClick={e => handleFormSwitch(e)}>
+      <button id='update' onClick={e => handleFormSwitch(e)}>
         update
       </button>
-      <button id="view" onClick={e => handleFormSwitch(e)}>
+      <button id='view' onClick={e => handleFormSwitch(e)}>
         view
       </button>
 
       {form === 'update' && (
-        <form className="updateform" onSubmit={e => handleSubmit(e)}>
-          <button type="submit" className="searchparambtn">
+        <form className='updateform' onSubmit={e => handleSubmit(e)}>
+          <button type='submit' className='searchparambtn'>
             Go!
           </button>
         </form>
       )}
 
       {form === 'view' && (
-        <div className="view">
-          <form className="viewform" onSubmit={e => handleSubmit(e)}>
-            <input
-              className="page"
-              type="textinput"
-              name="page"
-              id="page"
-              placeholder="page"
+        <div className='view'>
+          <form className='viewform' onSubmit={e => handleSubmit(e)}>
+            {/* <input
+              className='page'
+              type='textinput'
+              name='page'
+              id='page'
+              placeholder='page'
               onChange={e => handleChange(e)}
               value={formValues.page}
             ></input>
             <input
-              className="limit"
-              type="textinput"
-              name="limit"
-              id="limit"
-              placeholder="limit"
+              className='limit'
+              type='textinput'
+              name='limit'
+              id='limit'
+              placeholder='limit'
               onChange={e => handleChange(e)}
               value={formValues.limit}
-            ></input>
-            {/* <input
-              id="optionalsearch"
-              type="textinput"
-              name="optionalsearch"
-              placeholder="optional term"
+            ></input> */}
+            <input
+              id='optionalsearch'
+              type='textinput'
+              name='optionalsearch'
+              placeholder='optional term'
               onChange={e => handleChange(e)}
               values={formValues.optionalsearch}
-              disabled
-            ></input> */}
-            <button type="submit" className="searchparambtn">
+            ></input>
+            <button type='submit' className='searchparambtn'>
               Go!
             </button>
           </form>

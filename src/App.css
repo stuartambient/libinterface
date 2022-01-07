@@ -22,6 +22,6 @@ body {
 
 .grid {
   display: grid;
-  grid-template-columns: 20vw 80vw;
+  grid-template-columns: 20vw 75vw;
   grid-template-rows: 60vh;
 }

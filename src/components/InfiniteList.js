@@ -3,10 +3,10 @@ import useDb from '../hooks/useDb';
 /* import { Results, List, ListItem, Loading } from '../components/Results'; */
 import '../styles/Results.css';
 
-function InfiniteList() {
+function InfiniteList({ textSearch = null }) {
   const [pageNumber, setPageNumber] = useState(0);
 
-  const { loading, items, hasMore, error } = useDb(pageNumber);
+  const { loading, items, hasMore, error } = useDb(pageNumber, textSearch);
 
   const observer = useRef();
   const lastItemElement = useCallback(
@@ -26,24 +26,24 @@ function InfiniteList() {
 
   return (
     <>
-      <div className="results">
+      <div className='results'>
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (
-              <div className="item" ref={lastItemElement} key={item._id}>
+              <div className='item' ref={lastItemElement} key={item._id}>
                 {item.name}
               </div>
             );
           } else {
             return (
-              <div className="item" key={item._id}>
+              <div className='item' key={item._id}>
                 {item.name}
               </div>
             );
           }
         })}
-        <div className="item">{loading && 'Loading...'}</div>
-        <div className="item">{error && 'Error'}</div>
+        <div className='item'>{loading && 'Loading...'}</div>
+        <div className='item'>{error && 'Error'}</div>
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import React, { useState, useReducer } from 'react';
 
 import '../styles/ApiForm.css';
 
-const ApiForm = props => {
+const ApiForm = ({ searchReq, setSearchReq }) => {
   const [form, setForm] = useState(null);
 
   /* const { getData } = useLibrary(); */
@@ -34,11 +34,15 @@ const ApiForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    setSearchReq(prevsearchReq => ({
+      ...prevsearchReq,
+      req: true,
+      textsearch: formValues.optionalsearch,
+    }));
+    /* props.setSearchReq({ req: !props.searchReq.req });
     if (formValues.optionalsearch)
-      props.setTextSearch(formValues.optionalsearch);
-    if (props.getData === false) {
-      props.setGetData(true);
-    }
+      props.setSearchReq({ textsearch: formValues.optionalsearch }); */
+
     /* console.log(e); */
     /* getData({
       formValues,

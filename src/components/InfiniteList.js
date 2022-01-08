@@ -3,7 +3,7 @@ import useDb from '../hooks/useDb';
 /* import { Results, List, ListItem, Loading } from '../components/Results'; */
 import '../styles/Results.css';
 
-function InfiniteList({ textSearch = null }) {
+function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
 
   const { loading, items, hasMore, error } = useDb(pageNumber, textSearch);

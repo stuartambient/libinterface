@@ -2,18 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDb = (pageNumber, textsearch) => {
-  console.log('🚚🚒', pageNumber);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-
-  /*   let route;
-  textsearch ?route = 'http://localhost:3001/api/v1/library/music/getTitles' :,
-    el */
-  /*   useEffect(() => {
-    setItems([]);
-  }, [query]); */
 
   useEffect(() => {
     setLoading(true);
@@ -21,7 +13,7 @@ const useDb = (pageNumber, textsearch) => {
     axios({
       method: 'GET',
       url: `http://localhost:3001/api/v1/library/music/getTitles/`,
-      params: { page: pageNumber },
+      params: { page: pageNumber, text: textsearch },
     })
       .then(res => {
         setItems(prevItems => {
@@ -33,7 +25,7 @@ const useDb = (pageNumber, textsearch) => {
       .catch(e => {
         setError(true);
       });
-  }, [pageNumber]);
+  }, [pageNumber, textsearch]);
 
   return { loading, items, hasMore, error };
 };

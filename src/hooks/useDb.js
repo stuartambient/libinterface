@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDb = (pageNumber, textsearch) => {
+  console.log('💧💧💧', pageNumber);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);

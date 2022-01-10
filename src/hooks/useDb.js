@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDb = (pageNumber, textsearch) => {
-  console.log('💧💧💧', pageNumber);
+  console.log('called useDb');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
@@ -17,10 +17,12 @@ const useDb = (pageNumber, textsearch) => {
       params: { page: pageNumber, text: textsearch },
     })
       .then(res => {
+        console.log('res data: ', res.data);
         setItems(prevItems => {
           return [...prevItems, ...res.data];
         });
-        setHasMore(res.data.length > 0);
+        setHasMore(res.data.length >= 100);
+        /* console.log('has more: ', res.data.length > 100); */
         setLoading(false);
       })
       .catch(e => {

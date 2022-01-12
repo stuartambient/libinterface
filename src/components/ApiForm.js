@@ -30,6 +30,9 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
   const [formValues, setFormValues] = useReducer(formReducer, initialFormState);
 
   const handleFormSwitch = e => {
+    if (e.target.id === 'update') {
+      setUpdateReq(true);
+    }
     setForm(e.target.id);
   };
 
@@ -40,7 +43,7 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   const handleUpdateSubmit = e => {
     e.preventDefault();
-    setUpdateReq(true);
+    console.log(e.target);
   };
 
   const handleSearchSubmit = e => {
@@ -67,31 +70,40 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
   return (
     <div className='api-console'>
       <h3>Preferences</h3>
-      <button id='update' onClick={e => handleFormSwitch(e)}>
+      <div className='update' id='update' onClick={e => handleFormSwitch(e)}>
         update
-      </button>
-      {/* {updateReq === true && (
-        <div className='update-select'>
-          {drives.map(drive => {
-            return (
-              <div
-                key={drive}
-                style={{ display: 'flex', alignItems: 'center' }}
-              >
-                <input type='checkbox' name={drive} />
-                <label>{drive}</label>
-                <input type='text' />
-              </div>
-            );
-          })}
-        </div>
-      )} */}
-      <button id='view' onClick={e => handleFormSwitch(e)}>
+      </div>
+
+      <div className='view' id='view' onClick={e => handleFormSwitch(e)}>
         view
-      </button>
+      </div>
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
+          {updateReq === true && (
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                overflowY: 'scroll',
+                overflowX: 'hidden',
+              }}
+            >
+              {drives.map(drive => {
+                return (
+                  <div className='checkbox' key={drive}>
+                    <input
+                      type='checkbox'
+                      name={drive}
+                      style={{ height: '1.5em' }}
+                    />
+                    <label>{drive}</label>
+                    <input type='text' className='forminput-path' />
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <button type='submit' className='searchparambtn'>
             Update
           </button>
@@ -99,9 +111,8 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
       )}
 
       {form === 'view' && (
-        <div className='view'>
-          <form className='viewform' onSubmit={e => handleSearchSubmit(e)}>
-            {/* <input
+        <form className='viewform' onSubmit={e => handleSearchSubmit(e)}>
+          {/* <input
               className='page'
               type='textinput'
               name='page'
@@ -119,19 +130,18 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
               onChange={e => handleChange(e)}
               value={formValues.limit}
             ></input> */}
-            <input
-              id='optionalsearch'
-              type='textinput'
-              name='optionalsearch'
-              placeholder='optional term'
-              onChange={e => handleChange(e)}
-              values={formValues.optionalsearch}
-            ></input>
-            <button type='submit' className='searchparambtn'>
-              Search
-            </button>
-          </form>
-        </div>
+          <input
+            id='optionalsearch'
+            type='textinput'
+            name='optionalsearch'
+            placeholder='optional term'
+            onChange={e => handleChange(e)}
+            values={formValues.optionalsearch}
+          ></input>
+          <button type='submit' className='searchparambtn'>
+            Search
+          </button>
+        </form>
       )}
     </div>
   );

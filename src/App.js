@@ -12,12 +12,20 @@ const App = () => {
   const [textSearch, setTextSearch] = useState(); */
 
   const [searchReq, setSearchReq] = useState({ req: false, textsearch: '' });
+  const [scanPath, setScanPath] = useState(null);
+
+  /*   const { pathArray } = usePaths(scanPath); */
 
   return (
     <>
       <div className='container'>
         <div className='grid'>
-          <ApiForm setSearchReq={setSearchReq} searchReq={searchReq}></ApiForm>
+          <ApiForm
+            setSearchReq={setSearchReq}
+            searchReq={searchReq}
+            setScanPath={setScanPath}
+            scanPath={scanPath}
+          ></ApiForm>
           {searchReq.req === true && (
             <InfiniteList textSearch={searchReq.textsearch} />
           )}

@@ -1,5 +1,5 @@
-import React, { useState, useReducer } from 'react';
-import useSelect from '../hooks/useSelect';
+import React, { useEffect, useState, useReducer } from 'react';
+import AddPaths from './AddPaths';
 
 /* import useLibrary from '../hooks/useLibrary'; */
 
@@ -7,32 +7,36 @@ import '../styles/ApiForm.css';
 
 const ApiForm = ({ searchReq, setSearchReq }) => {
   const [form, setForm] = useState(null);
-  const [updateReq, setUpdateReq] = useState(false);
-  const { drives } = useSelect();
-
-  /* const { getData } = useLibrary(); */
-
-  /*   const { setGetter } = useLibrary('music');
-  const [checked, setChecked] = useState(false); */
-
-  console.log('🦼🦽🦽', drives);
 
   const formReducer = (state, newState) => {
     return { ...state, ...newState };
   };
 
+  const [paths, setPaths] = useState([]);
+  const [currentPaths, setCurrentPaths] = useState([]);
+
+  useEffect(
+    function readPaths() {
+      if (paths.length) {
+        const response = AddPaths(paths);
+        setPaths([]);
+        setCurrentPaths(response);
+      }
+      return;
+    },
+    [paths]
+  );
+
   const initialFormState = {
     page: '',
     /* optionalsearch: '', */
     limit: '',
+    paths: [],
   };
 
   const [formValues, setFormValues] = useReducer(formReducer, initialFormState);
 
   const handleFormSwitch = e => {
-    if (e.target.id === 'update') {
-      setUpdateReq(true);
-    }
     setForm(e.target.id);
   };
 
@@ -43,7 +47,13 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   const handleUpdateSubmit = e => {
     e.preventDefault();
-    console.log(e.target);
+    if (!formValues.paths.length) return;
+    const pathsArray = formValues.paths.split(',');
+    setFormValues(() => ({
+      ...formValues,
+      paths: pathsArray,
+    }));
+    setPaths(pathsArray);
   };
 
   const handleSearchSubmit = e => {
@@ -80,30 +90,16 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
-          {updateReq === true && (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                overflowY: 'scroll',
-                overflowX: 'hidden',
-              }}
-            >
-              {drives.map(drive => {
-                return (
-                  <div className='checkbox' key={drive}>
-                    <input
-                      type='checkbox'
-                      name={drive}
-                      style={{ height: '1.5em' }}
-                    />
-                    <label>{drive}</label>
-                    <input type='text' className='forminput-path' />
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          {currentPaths.length > 0 &&
+            currentPaths.map(cp => <p key={cp}>{cp}</p>)}
+          <input
+            id='paths'
+            type='textinput'
+            name='paths'
+            placeholder='comma separated...'
+            onChange={e => handleChange(e)}
+            values={formValues.paths}
+          ></input>
           <button type='submit' className='searchparambtn'>
             Update
           </button>

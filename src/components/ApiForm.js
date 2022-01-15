@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useReducer } from 'react';
-import AddPaths from './AddPaths';
+import React, { useState, useReducer } from 'react';
+import usePaths from '../hooks/usePaths';
 
 /* import useLibrary from '../hooks/useLibrary'; */
 
@@ -12,20 +12,7 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     return { ...state, ...newState };
   };
 
-  const [paths, setPaths] = useState([]);
-  const [currentPaths, setCurrentPaths] = useState([]);
-
-  useEffect(
-    function readPaths() {
-      if (paths.length) {
-        const response = AddPaths(paths);
-        setPaths([]);
-        setCurrentPaths(response);
-      }
-      return;
-    },
-    [paths]
-  );
+  const { setPaths, invalid, confirmed } = usePaths();
 
   const initialFormState = {
     page: '',
@@ -47,13 +34,10 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   const handleUpdateSubmit = e => {
     e.preventDefault();
-    if (!formValues.paths.length) return;
+    if (formValues.paths === '') return;
     const pathsArray = formValues.paths.split(',');
-    setFormValues(() => ({
-      ...formValues,
-      paths: pathsArray,
-    }));
-    setPaths(pathsArray);
+    const trimmed = pathsArray.map(path => path.trimStart());
+    setPaths(trimmed);
   };
 
   const handleSearchSubmit = e => {
@@ -90,8 +74,9 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
-          {currentPaths.length > 0 &&
-            currentPaths.map(cp => <p key={cp}>{cp}</p>)}
+          {invalid.length > 0 && invalid.map(inv => <div key={inv}>{inv}</div>)}
+          {confirmed.length > 0 &&
+            confirmed.map(conf => <div key={conf}>{conf}</div>)}
           <input
             id='paths'
             type='textinput'

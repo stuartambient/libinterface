@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ApiForm from './components/ApiForm';
 import InfiniteList from './components/InfiniteList';
@@ -15,6 +15,9 @@ const App = () => {
   const [scanPath, setScanPath] = useState(null);
 
   /*   const { pathArray } = usePaths(scanPath); */
+  useEffect(() => {
+    console.log('SEARCH REQ: ', searchReq);
+  }, [searchReq]);
 
   return (
     <>

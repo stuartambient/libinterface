@@ -30,7 +30,7 @@ const useDb = (pageNumber, textsearch) => {
       });
   }, [pageNumber, textsearch]);
 
-  return { loading, items, hasMore, error };
+  return { loading, items, setItems, hasMore, error };
 };
 
 export default useDb;

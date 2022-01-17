@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import useDb from '../hooks/useDb';
+import Loader from './loader';
 
 /* import useNode from '../hooks/useNode'; */
 /* import { Results, List, ListItem, Loading } from '../components/Results'; */
@@ -10,7 +11,14 @@ function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
 
-  const { loading, items, hasMore, error } = useDb(pageNumber, textSearch);
+  const { loading, items, setItems, hasMore, error } = useDb(
+    pageNumber,
+    textSearch
+  );
+
+  useEffect(() => {
+    setItems([]);
+  }, [textSearch, setItems]);
 
   useEffect(() => {
     if (link)
@@ -46,6 +54,11 @@ function InfiniteList({ textSearch }) {
   return (
     <>
       <div className='results'>
+        {!items.length && (
+          <div className='loader-flex'>
+            <Loader />
+          </div>
+        )}
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (

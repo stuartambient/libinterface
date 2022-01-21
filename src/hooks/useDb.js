@@ -7,6 +7,7 @@ const useDb = (pageNumber, textsearch) => {
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [found, setFound] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -17,7 +18,7 @@ const useDb = (pageNumber, textsearch) => {
       params: { page: pageNumber, text: textsearch },
     })
       .then(res => {
-        console.log('res data: ', res.data);
+        if (!res.data.length) setFound(false);
         setItems(prevItems => {
           return [...prevItems, ...res.data];
         });
@@ -30,7 +31,7 @@ const useDb = (pageNumber, textsearch) => {
       });
   }, [pageNumber, textsearch]);
 
-  return { loading, items, setItems, hasMore, error };
+  return { loading, items, setItems, hasMore, error, found };
 };
 
 export default useDb;

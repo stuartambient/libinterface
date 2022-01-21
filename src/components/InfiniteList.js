@@ -11,7 +11,7 @@ function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
 
-  const { loading, items, setItems, hasMore, error } = useDb(
+  const { loading, items, setItems, hasMore, error, found } = useDb(
     pageNumber,
     textSearch
   );
@@ -54,11 +54,11 @@ function InfiniteList({ textSearch }) {
   return (
     <>
       <div className='results'>
-        {!items.length && (
+        {!items.length ? (
           <div className='loader-flex'>
             <Loader />
           </div>
-        )}
+        ) : null}
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (

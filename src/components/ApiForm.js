@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from 'react';
+import { useEffect } from 'react/cjs/react.development';
 import usePaths from '../hooks/usePaths';
 
 /* import useLibrary from '../hooks/useLibrary'; */
@@ -12,7 +13,9 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     return { ...state, ...newState };
   };
 
-  const { setPaths, invalid, confirmed } = usePaths();
+  const { setPaths, invalid, confirmed, response } = usePaths();
+
+  useEffect(() => console.log(response), [response]);
 
   const initialFormState = {
     page: '',
@@ -74,9 +77,9 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
-          {invalid.length > 0 && invalid.map(inv => <div key={inv}>{inv}</div>)}
+          {/* {invalid.length > 0 && invalid.map(inv => <div key={inv}>{inv}</div>)}
           {confirmed.length > 0 &&
-            confirmed.map(conf => <div key={conf}>{conf}</div>)}
+            confirmed.map(conf => <div key={conf}>{conf}</div>)} */}
           <input
             id='paths'
             type='textinput'

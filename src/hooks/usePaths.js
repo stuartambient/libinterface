@@ -12,7 +12,11 @@ const usePaths = () => {
   // DATA FUNCTION BELOW  HOWEVER 'RES' SEEMS TO VANISH
   // AFTER SETTING THE FIRST STATE
   // MAYBE COMBINE BOTH IN A USEREDUCER
+  const [current, setCurrent] = useState(true);
   const [response, setResponse] = useState();
+
+  const setPathsUrl = `http://localhost:3001/api/v1/library/music/userPaths/`;
+  const getPathsUrl = `http://localhost:3001/api/v1/library/music/currentUserPaths/`;
 
   useEffect(() => {
     const fetchData = paths => {
@@ -42,7 +46,7 @@ const usePaths = () => {
     setPaths([]);
   } */
 
-  return { setPaths, invalid, confirmed };
+  return { setPaths, invalid, confirmed, response };
 };
 
 export default usePaths;

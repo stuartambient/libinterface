@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDb = (pageNumber, textsearch) => {
-  console.log('called useDb');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [found, setFound] = useState(true);
 
   useEffect(() => {
     setLoading(true);
@@ -18,7 +16,6 @@ const useDb = (pageNumber, textsearch) => {
       params: { page: pageNumber, text: textsearch },
     })
       .then(res => {
-        if (!res.data.length) setFound(false);
         setItems(prevItems => {
           return [...prevItems, ...res.data];
         });
@@ -31,7 +28,7 @@ const useDb = (pageNumber, textsearch) => {
       });
   }, [pageNumber, textsearch]);
 
-  return { loading, items, setItems, hasMore, error, found };
+  return { loading, items, setItems, hasMore, error };
 };
 
 export default useDb;

@@ -59,7 +59,9 @@ function InfiniteList({ textSearch }) {
             <Loader />
           </div>
         )}
-        {!items.length && <div className='no-results'>No results</div>}
+        {!items.length && !loading ? (
+          <div className='no-results'>No results</div>
+        ) : null}
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (

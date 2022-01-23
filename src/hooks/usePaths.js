@@ -12,6 +12,7 @@ const usePaths = () => {
   // DATA FUNCTION BELOW  HOWEVER 'RES' SEEMS TO VANISH
   // AFTER SETTING THE FIRST STATE
   // MAYBE COMBINE BOTH IN A USEREDUCER
+  const [reqCurrent, setReqCurrent] = useState(false);
   const [current, setCurrent] = useState(true);
   const [response, setResponse] = useState();
 
@@ -39,14 +40,16 @@ const usePaths = () => {
     }
   }, [response, setConfirmed, setInvalid]);
 
-  /* function handlePathsResponse(data) {
-    console.log('data: ', data);
-    setInvalid(data.invalid);
-    setConfirmed(data.confirmed);
-    setPaths([]);
-  } */
+  useEffect(() => {
+    const checkCurrentPaths = () => {
+      console.log('checkCurrentPaths');
+      setCurrent(['all here']);
+    };
 
-  return { setPaths, invalid, confirmed, response };
+    if (reqCurrent) checkCurrentPaths();
+  }, [reqCurrent]);
+
+  return { setPaths, invalid, confirmed, response, setReqCurrent, current };
 };
 
 export default usePaths;

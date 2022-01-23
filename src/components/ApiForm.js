@@ -8,14 +8,18 @@ import '../styles/ApiForm.css';
 
 const ApiForm = ({ searchReq, setSearchReq }) => {
   const [form, setForm] = useState(null);
+  const { setPaths, invalid, confirmed, setReqCurrent, current } = usePaths();
+
+  useEffect(() => {
+    if (form === 'update') {
+      console.log('update');
+      setReqCurrent(true);
+    }
+  }, [form, setReqCurrent]);
 
   const formReducer = (state, newState) => {
     return { ...state, ...newState };
   };
-
-  const { setPaths, invalid, confirmed, response } = usePaths();
-
-  useEffect(() => console.log(response), [response]);
 
   const initialFormState = {
     page: '',
@@ -50,6 +54,7 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
       req: true,
       textsearch: formValues.optionalsearch,
     }));
+
     /* props.setSearchReq({ req: !props.searchReq.req });
     if (formValues.optionalsearch)
       props.setSearchReq({ textsearch: formValues.optionalsearch }); */
@@ -67,19 +72,27 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
   return (
     <div className='api-console'>
       <h3>Preferences</h3>
-      <div className='update' id='update' onClick={e => handleFormSwitch(e)}>
+      <div
+        className='update'
+        id='update'
+        data-descrp='add, remove or update'
+        onClick={e => handleFormSwitch(e)}
+      >
         update
       </div>
 
-      <div className='view' id='view' onClick={e => handleFormSwitch(e)}>
+      <div
+        className='view'
+        id='view'
+        data-descrp='search or view all'
+        onClick={e => handleFormSwitch(e)}
+      >
         view
       </div>
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
-          {/* {invalid.length > 0 && invalid.map(inv => <div key={inv}>{inv}</div>)}
-          {confirmed.length > 0 &&
-            confirmed.map(conf => <div key={conf}>{conf}</div>)} */}
+          {current && <div>{current}</div>}
           <input
             id='paths'
             type='textinput'

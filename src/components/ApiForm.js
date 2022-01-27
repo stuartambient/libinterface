@@ -5,6 +5,7 @@ import usePaths from '../hooks/usePaths';
 /* import useLibrary from '../hooks/useLibrary'; */
 
 import '../styles/ApiForm.css';
+import '../styles/root.css';
 
 const ApiForm = ({ searchReq, setSearchReq }) => {
   const [form, setForm] = useState(null);

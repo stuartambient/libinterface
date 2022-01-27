@@ -95,8 +95,12 @@ function InfiniteList({ textSearch }) {
         })}
         {hasMore && (
           <>
-            <div className='item' style={{ backgroundColor: 'lightgray' }}>
-              {loading && 'Loading...'}
+            <div
+              className='item' /* style={{ backgroundColor: 'lightgray' }} */
+            >
+              {loading && items.length ? (
+                <div className='loading'>Loading...</div>
+              ) : null}
             </div>
             <div className='item'>{error && 'Error'}</div>
           </>

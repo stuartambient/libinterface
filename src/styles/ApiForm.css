@@ -1,3 +1,5 @@
+@import './root.css';
+
 .api-console {
   grid-column: 1 / 2;
   display: grid;
@@ -6,12 +8,14 @@
 
   justify-items: center;
   align-items: center;
-  background-color: cornsilk;
+  background-color: var(--COLOR-1);
 }
 
-h3 {
+.api-console > h3 {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
+  color: var(--COLOR-5);
+  font-weight: 400;
 }
 
 .view {
@@ -28,10 +32,11 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  background-color: rgb(233, 121, 121);
-  color: white;
+  border-radius: 5px;
+  background-color: var(--COLOR-1);
+  color: var(--COLOR-5);
+  border: 1px solid var(--COLOR-5);
+  box-shadow: 0px 0px 5px;
   height: 100%;
   width: 100%;
 }
@@ -105,17 +110,17 @@ input:not(.forminput-path) {
   padding: 5px;
 }
 
-div[data-descr] {
-  /*  position: relative; */
+/* div[data-descrp] {
+  position: relative;
   text-decoration: underline;
   color: #00f;
   cursor: help;
 }
 
-div[data-descr]:hover::after,
-div[data-descr]:focus::after {
-  content: attr(data-descr);
-  /*   position: absolute; */
+div[data-descrp]:hover::after,
+div[data-descrp]:focus::after {
+  content: attr(data-descrp);
+  position: absolute;
   left: 0;
   top: 24px;
   min-width: 200px;
@@ -127,3 +132,4 @@ div[data-descr]:focus::after {
   font-size: 14px;
   z-index: 1;
 }
+ */

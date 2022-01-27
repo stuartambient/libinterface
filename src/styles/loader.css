@@ -1,3 +1,5 @@
+@import url('./root.css');
+
 .loader {
   width: 4.8px;
   height: 4.8px;
@@ -44,5 +46,5 @@
   display: flex;
   align-items: center;
   justify-items: center;
-  background-color: #add8e6;
+  background-color: var(--COLOR-1);
 }

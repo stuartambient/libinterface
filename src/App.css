@@ -30,11 +30,13 @@ body {
 
 .container {
   margin: 0 auto;
-  width: 90vw;
+  width: 100%;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 20vw 75vw;
+  grid-template-columns: 40% 60%;
   grid-template-rows: 60vh;
+  margin: 0 auto;
+  grid-column-gap: 10px;
 }

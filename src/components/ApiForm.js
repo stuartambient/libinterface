@@ -9,6 +9,7 @@ import '../styles/root.css';
 
 const ApiForm = ({ searchReq, setSearchReq }) => {
   const [form, setForm] = useState(null);
+  const [preferences, openPreferences] = useState(false);
   const { setPaths, invalid, confirmed, setReqCurrent, current } = usePaths();
 
   useEffect(() => {
@@ -48,6 +49,12 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     setPaths(trimmed);
   };
 
+  const handleMenu = e => {
+    e.preventDefault();
+    openPreferences(!preferences);
+    setForm(null);
+  };
+
   const handleSearchSubmit = e => {
     e.preventDefault();
     setSearchReq(prevsearchReq => ({
@@ -72,24 +79,29 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   return (
     <div className='api-console'>
-      <h3>Preferences</h3>
-      <div
-        className='update'
-        id='update'
-        data-descrp='add, remove or update'
-        onClick={e => handleFormSwitch(e)}
-      >
-        update
-      </div>
+      {/*       <h3 onClick={e => openPreferences(!preferences)}>Preferences</h3> */}
+      <h3 onClick={e => handleMenu(e)}>Preferences</h3>
+      {preferences && (
+        <div
+          className='update'
+          id='update'
+          data-descrp='add, remove or update'
+          onClick={e => handleFormSwitch(e)}
+        >
+          update
+        </div>
+      )}
 
-      <div
-        className='view'
-        id='view'
-        data-descrp='search or view all'
-        onClick={e => handleFormSwitch(e)}
-      >
-        view
-      </div>
+      {preferences && (
+        <div
+          className='view'
+          id='view'
+          data-descrp='search or view all'
+          onClick={e => handleFormSwitch(e)}
+        >
+          view
+        </div>
+      )}
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>

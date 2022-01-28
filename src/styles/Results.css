@@ -3,10 +3,12 @@
 .results {
   grid-column: 2 / 3;
   overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 1.5rem;
 }
 
 .item {
-  height: 3em;
+  height: 4em;
   display: flex;
   justify-content: flex-start;
   border: 1px solid var(--COLOR-5);
@@ -17,6 +19,7 @@
 }
 
 .item a {
+  text-decoration: none;
   color: var(--COLOR-5);
 }
 

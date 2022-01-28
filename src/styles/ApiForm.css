@@ -4,7 +4,7 @@
   grid-column: 1 / 2;
   display: grid;
   grid-template-columns: repeat(2, 50%);
-  grid-template-rows: 2em 2em 1fr;
+  grid-template-rows: 3em 2em 1fr;
 
   justify-items: center;
   align-items: center;
@@ -16,6 +16,13 @@
   grid-row: 1 / 2;
   color: var(--COLOR-5);
   font-weight: 400;
+  text-shadow: 0 0 0 0;
+  transition: text-shadow 1s ease-in-out;
+}
+
+.api-console > h3:hover {
+  cursor: pointer;
+  text-shadow: 0px 5px 0.7px var(--COLOR-2);
 }
 
 .view {
@@ -36,14 +43,16 @@
   background-color: var(--COLOR-1);
   color: var(--COLOR-5);
   border: 1px solid var(--COLOR-5);
-  box-shadow: 0px 0px 5px;
+  box-shadow: 0px 0px 1px;
   height: 100%;
-  width: 100%;
+  width: 80%;
 }
 
 .update:hover,
 .view:hover {
   cursor: pointer;
+  background-color: var(--COLOR-5);
+  color: var(--COLOR-1);
 }
 
 .updateform,
@@ -83,12 +92,20 @@ input:not(.forminput-path) {
 
 .searchparambtn {
   margin-top: 1em;
-  height: 2em;
-  width: 50%;
+  height: 3rem;
+  width: 80%;
   align-self: center;
-  border: 1px solid green;
+  border: 1px solid var(--COLOR-3);
+  color: var(--COLOR-5);
   border-radius: 5px;
-  background-color: transparent;
+  background-color: var(--COLOR-1);
+  box-shadow: 2px 2px var(--COLOR-1);
+  font-size: 1.1rem;
+}
+
+.searchparambtn:hover {
+  background-color: var(--COLOR-5);
+  color: var(--COLOR-1);
 }
 
 /* .update-select {

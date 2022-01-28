@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useDb = (pageNumber, textsearch) => {
@@ -6,6 +6,10 @@ const useDb = (pageNumber, textsearch) => {
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  React.useDebugValue({ loading, value: loading });
+  React.useDebugValue({ error, value: error });
+  React.useDebugValue({ items, value: items });
+  React.useDebugValue({ hasMore, value: hasMore });
 
   useEffect(() => {
     setLoading(true);

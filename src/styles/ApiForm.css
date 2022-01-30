@@ -17,6 +17,7 @@
   color: var(--COLOR-5);
   font-weight: 400;
   text-shadow: 0 0 0 0;
+  /* transform: rotate(-90deg) translateY(3rem); */
   transition: text-shadow 1s ease-in-out;
 }
 
@@ -63,9 +64,9 @@
   width: 80%;
 }
 
-.updateform {
+/* .updateform {
   width: 90%;
-}
+} */
 /* button:not(.searchparambtn) {
   margin: 1em;
   height: 3em;
@@ -74,9 +75,9 @@
   border-radius: 5px;
 }
  */
-input {
+/* input {
   margin-top: 0.4em;
-}
+} */
 
 .perpage {
   width: 40%;

@@ -14,7 +14,6 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   useEffect(() => {
     if (form === 'update') {
-      console.log('update');
       setReqCurrent(true);
     }
   }, [form, setReqCurrent]);
@@ -34,6 +33,27 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   const handleFormSwitch = e => {
     setForm(e.target.id);
+    if (e.target.id === 'update') {
+      setSearchReq(searchReq => ({
+        ...searchReq,
+        req: false,
+        config: true,
+        textsearch: '',
+      }));
+    }
+
+    if (e.target.id === 'view') {
+      setSearchReq(searchReq => ({
+        ...searchReq,
+        req: false,
+        config: false,
+        textsearch: '',
+      }));
+    }
+    /*  setSearchReq(searchReq => ({
+      ...searchReq,
+      req: false,
+    })); */
   };
 
   const handleChange = event => {
@@ -55,13 +75,28 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     setForm(null);
   };
 
-  const handleSearchSubmit = e => {
-    e.preventDefault();
-    setSearchReq(prevsearchReq => ({
-      ...prevsearchReq,
+  const sendSubmit = e => {
+    setSearchReq(searchReq => ({
+      ...searchReq,
       req: true,
       textsearch: formValues.optionalsearch,
     }));
+  };
+
+  const handleSearchSubmit = e => {
+    e.preventDefault();
+    /*     setSearchReq(prevsearchReq => ({
+      ...prevsearchReq,
+      req: true,
+      textsearch: formValues.optionalsearch,
+    })); */
+    setSearchReq(searchReq => ({
+      ...searchReq,
+      req: false,
+      /* textsearch: formValues.optionalsearch, */
+    }));
+
+    setTimeout(() => sendSubmit(e), 1000);
 
     /* props.setSearchReq({ req: !props.searchReq.req });
     if (formValues.optionalsearch)
@@ -105,12 +140,12 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>
-          {current && <div>{current}</div>}
+          {/* {current && <div>{current}</div>} */}
           <input
             id='paths'
             type='textinput'
             name='paths'
-            placeholder='comma separated...'
+            placeholder='comma separated'
             onChange={e => handleChange(e)}
             values={formValues.paths}
           ></input>

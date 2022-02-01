@@ -2,26 +2,35 @@ import React, { useState, useReducer } from 'react';
 import { useEffect } from 'react/cjs/react.development';
 import usePaths from '../hooks/usePaths';
 
+import { FaBookOpen } from 'react-icons/fa';
+
 /* import useLibrary from '../hooks/useLibrary'; */
 
 import '../styles/ApiForm.css';
 import '../styles/root.css';
 
-const ApiForm = ({ searchReq, setSearchReq }) => {
+const ApiForm = ({ appState, setAppState }) => {
+  // configuration or search form / which form
   const [form, setForm] = useState(null);
+  // opens and closes the full menu
   const [preferences, openPreferences] = useState(false);
-  const { setPaths, invalid, confirmed, setReqCurrent, current } = usePaths();
+  // configure and collect paths
+  const { setPaths, invalid, confirmed, setRequestCurrentPaths, current } =
+    usePaths();
 
+  // setup form from usePaths()
   useEffect(() => {
     if (form === 'update') {
-      setReqCurrent(true);
+      setRequestCurrentPaths(true);
     }
-  }, [form, setReqCurrent]);
+  }, [form, setRequestCurrentPaths]);
 
+  // element values
   const formReducer = (state, newState) => {
     return { ...state, ...newState };
   };
 
+  // initial object and its 3 properties
   const initialFormState = {
     page: '',
     /* optionalsearch: '', */
@@ -31,22 +40,26 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
   const [formValues, setFormValues] = useReducer(formReducer, initialFormState);
 
+  // resets object from App.js where main content is either a form for config
+  // or for search results
+
   const handleFormSwitch = e => {
     setForm(e.target.id);
+    console.log('etargetid: ', e.target.id);
     if (e.target.id === 'update') {
-      setSearchReq(searchReq => ({
-        ...searchReq,
-        req: false,
-        config: true,
+      setAppState(appState => ({
+        ...appState,
+        isSearch: false,
+        isConfig: true,
         textsearch: '',
       }));
     }
 
     if (e.target.id === 'view') {
-      setSearchReq(searchReq => ({
-        ...searchReq,
-        req: false,
-        config: false,
+      setAppState(appState => ({
+        ...appState,
+        isSearch: false,
+        isConfig: false,
         textsearch: '',
       }));
     }
@@ -56,10 +69,14 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     })); */
   };
 
+  // keep state for form inputs
+
   const handleChange = event => {
     const { name, value } = event.target;
     setFormValues({ [name]: value });
   };
+
+  // handles update form values
 
   const handleUpdateSubmit = e => {
     e.preventDefault();
@@ -69,56 +86,61 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
     setPaths(trimmed);
   };
 
+  //search form values
+
+  const sendSubmit = e => {
+    setAppState(appState => ({
+      ...appState,
+      isSearch: true,
+      textsearch: formValues.optionalsearch,
+    }));
+  };
+
+  // opens menu, starts with no active forms,
+  // resets App's state object
   const handleMenu = e => {
     e.preventDefault();
     openPreferences(!preferences);
-    setForm(null);
-  };
 
-  const sendSubmit = e => {
-    setSearchReq(searchReq => ({
-      ...searchReq,
-      req: true,
-      textsearch: formValues.optionalsearch,
+    setForm(null);
+
+    setAppState(appState => ({
+      ...appState,
+      isSearch: false,
+      isConfig: false,
+      textsearch: '',
     }));
   };
 
+  // changes App state first - setting new form text,
+  // having App remove  'Results' first (mostly for the 'new search' loader),
+  // uses a setTimeout between removing and opening again the results page
   const handleSearchSubmit = e => {
     e.preventDefault();
-    /*     setSearchReq(prevsearchReq => ({
-      ...prevsearchReq,
-      req: true,
+
+    setAppState(prevappState => ({
+      ...prevappState,
+      isSearch: false,
       textsearch: formValues.optionalsearch,
-    })); */
-    setSearchReq(searchReq => ({
-      ...searchReq,
-      req: false,
-      /* textsearch: formValues.optionalsearch, */
     }));
 
     setTimeout(() => sendSubmit(e), 1000);
-
-    /* props.setSearchReq({ req: !props.searchReq.req });
-    if (formValues.optionalsearch)
-      props.setSearchReq({ textsearch: formValues.optionalsearch }); */
-
-    /* console.log(e); */
-    /* getData({
-      formValues,
-      setEntries: props.setEntries,
-    }); */
-    /* props.setGetData(
-      props.getData === false ? props.setGetData(true) : props.setGetData(false)
-    ); */
   };
 
   return (
     <div className='api-console'>
       {/*       <h3 onClick={e => openPreferences(!preferences)}>Preferences</h3> */}
-      <h3 onClick={e => handleMenu(e)}>Preferences</h3>
+      <div className='menu-tab' onClick={e => handleMenu(e)}>
+        <div className='icon'>
+          <FaBookOpen id='icon' />
+        </div>
+
+        <span>open</span>
+      </div>
       {preferences && (
         <div
-          className='update'
+          /* className='update' */
+          className={form === 'update' ? 'updateactive' : 'update'}
           id='update'
           data-descrp='add, remove or update'
           onClick={e => handleFormSwitch(e)}
@@ -129,7 +151,8 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {preferences && (
         <div
-          className='view'
+          /* className='view' */
+          className={form === 'view' ? 'viewactive' : 'view'}
           id='view'
           data-descrp='search or view all'
           onClick={e => handleFormSwitch(e)}
@@ -157,24 +180,6 @@ const ApiForm = ({ searchReq, setSearchReq }) => {
 
       {form === 'view' && (
         <form className='viewform' onSubmit={e => handleSearchSubmit(e)}>
-          {/* <input
-              className='page'
-              type='textinput'
-              name='page'
-              id='page'
-              placeholder='page'
-              onChange={e => handleChange(e)}
-              value={formValues.page}
-            ></input>
-            <input
-              className='limit'
-              type='textinput'
-              name='limit'
-              id='limit'
-              placeholder='limit'
-              onChange={e => handleChange(e)}
-              value={formValues.limit}
-            ></input> */}
           <input
             id='optionalsearch'
             type='textinput'

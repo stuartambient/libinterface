@@ -12,13 +12,14 @@ const usePaths = () => {
   // DATA FUNCTION BELOW  HOWEVER 'RES' SEEMS TO VANISH
   // AFTER SETTING THE FIRST STATE
   // MAYBE COMBINE BOTH IN A USEREDUCER
-  const [reqCurrent, setReqCurrent] = useState(false);
+  const [requestCurrentPaths, setRequestCurrentPaths] = useState(false);
   const [current, setCurrent] = useState(true);
   const [response, setResponse] = useState();
 
-  const setPathsUrl = `http://localhost:3001/api/v1/library/music/userPaths/`;
-  const getPathsUrl = `http://localhost:3001/api/v1/library/music/currentUserPaths/`;
+  /*   const setPathsUrl = `http://localhost:3001/api/v1/library/music/userPaths/`;
+  const getPathsUrl = `http://localhost:3001/api/v1/library/music/currentUserPaths/`; */
 
+  // SENDS ARRAY OF PATH(S) ENTERED IN FORM INPUT
   useEffect(() => {
     const fetchData = paths => {
       axios({
@@ -46,10 +47,17 @@ const usePaths = () => {
       setCurrent(['all here']);
     };
 
-    if (reqCurrent) checkCurrentPaths();
-  }, [reqCurrent]);
+    if (requestCurrentPaths) checkCurrentPaths();
+  }, [requestCurrentPaths]);
 
-  return { setPaths, invalid, confirmed, response, setReqCurrent, current };
+  return {
+    setPaths,
+    invalid,
+    confirmed,
+    response,
+    setRequestCurrentPaths,
+    current,
+  };
 };
 
 export default usePaths;

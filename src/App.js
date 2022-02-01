@@ -9,15 +9,13 @@ import './App.css';
 /* import { useEffect } from 'react/cjs/react.development'; */
 
 const App = () => {
-  /* const [getData, setGetData] = useState(false);
-  const [textSearch, setTextSearch] = useState(); */
-
-  const [searchReq, setSearchReq] = useState({
-    req: false,
-    config: false,
+  const [main, setMain] = useState({
+    isSearch: false,
+    isConfig: false,
     textsearch: '',
   });
-  const [scanPath, setScanPath] = useState(null);
+
+  /*  const [scanPath, setScanPath] = useState(null); */
 
   /*   const { pathArray } = usePaths(scanPath); */
 
@@ -26,15 +24,15 @@ const App = () => {
       <div className='container'>
         <div className='grid'>
           <ApiForm
-            setSearchReq={setSearchReq}
-            searchReq={searchReq}
-            setScanPath={setScanPath}
-            scanPath={scanPath}
+            appState={main}
+            setAppState={setMain}
+            /*             setScanPath={setScanPath}
+            scanPath={scanPath} */
           ></ApiForm>
-          {searchReq.req === true && (
-            <InfiniteList textSearch={searchReq.textsearch} />
+          {main.isSearch === true && (
+            <InfiniteList textSearch={main.textsearch} />
           )}
-          {searchReq.config === true && <Configuration />}
+          {main.isConfig === true && <Configuration />}
         </div>
       </div>
     </>

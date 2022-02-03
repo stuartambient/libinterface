@@ -130,36 +130,35 @@ const ApiForm = ({ appState, setAppState }) => {
   return (
     <div className='api-console'>
       {/*       <h3 onClick={e => openPreferences(!preferences)}>Preferences</h3> */}
-      <div className='menu-tab' onClick={e => handleMenu(e)}>
-        <div className='icon'>
+      <div className='menu-tab'>
+        <div className='icon' onClick={e => handleMenu(e)}>
           <FaBookOpen id='icon' />
         </div>
 
-        <span>open</span>
-      </div>
-      {preferences && (
-        <div
-          /* className='update' */
-          className={form === 'update' ? 'updateactive' : 'update'}
-          id='update'
-          data-descrp='add, remove or update'
-          onClick={e => handleFormSwitch(e)}
-        >
-          update
-        </div>
-      )}
+        {preferences && (
+          <div
+            /* className='update' */
+            className={form === 'update' ? 'updateactive' : 'update'}
+            id='update'
+            data-descrp='add, remove or update'
+            onClick={e => handleFormSwitch(e)}
+          >
+            update
+          </div>
+        )}
 
-      {preferences && (
-        <div
-          /* className='view' */
-          className={form === 'view' ? 'viewactive' : 'view'}
-          id='view'
-          data-descrp='search or view all'
-          onClick={e => handleFormSwitch(e)}
-        >
-          view
-        </div>
-      )}
+        {preferences && (
+          <div
+            /* className='view' */
+            className={form === 'view' ? 'viewactive' : 'view'}
+            id='view'
+            data-descrp='search or view all'
+            onClick={e => handleFormSwitch(e)}
+          >
+            view
+          </div>
+        )}
+      </div>
 
       {form === 'update' && (
         <form className='updateform' onSubmit={e => handleUpdateSubmit(e)}>

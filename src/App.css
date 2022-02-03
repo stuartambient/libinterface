@@ -40,3 +40,10 @@ body {
   margin: 0 auto;
   grid-column-gap: 10px;
 }
+
+@media only screen and (max-width: 400px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 20vh 50vh;
+  }
+}

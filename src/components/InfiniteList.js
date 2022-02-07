@@ -10,11 +10,18 @@ import '../styles/Results.css';
 function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
+  const [edit, setEdit] = useState(false);
 
   const { loading, items, setItems, hasMore, error } = useDb(
     pageNumber,
     textSearch
   );
+
+  const editRef = useRef(null);
+
+  const handleEditClick = e => {
+    edit ? setEdit(false) : setEdit(true);
+  };
 
   useEffect(() => {
     setItems([]);
@@ -32,6 +39,8 @@ function InfiniteList({ textSearch }) {
       setLink('');
     };
   }, [link]);
+
+  useEffect(() => console.log('edit: ', edit), [edit]);
 
   const observer = useRef();
   const lastItemElement = useCallback(
@@ -89,6 +98,18 @@ function InfiniteList({ textSearch }) {
                 >
                   {item.name}
                 </a>
+                {edit === true ? (
+                  <div
+                    className='item-submit-edit-btn'
+                    onClick={handleEditClick}
+                  >
+                    Submit
+                  </div>
+                ) : (
+                  <div className='item-edit-btn' onClick={handleEditClick}>
+                    Edit
+                  </div>
+                )}
               </div>
             );
           }

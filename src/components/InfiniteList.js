@@ -10,18 +10,26 @@ import '../styles/Results.css';
 function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
-  const [edit, setEdit] = useState(false);
+  const [edits, setEdits] = useState([{ item: {} }]);
 
   const { loading, items, setItems, hasMore, error } = useDb(
     pageNumber,
     textSearch
   );
 
-  const editRef = useRef(null);
-
-  const handleEditClick = e => {
-    edit ? setEdit(false) : setEdit(true);
+  const handleEdit = id => {
+    items.map(item => {
+      if (item._id === id) {
+        item = { ...item, edit: true };
+        return console.log(item);
+      } else {
+        console.log('didnt work');
+        return item;
+      }
+    });
   };
+
+  const editRef = useRef(null);
 
   useEffect(() => {
     setItems([]);
@@ -39,8 +47,6 @@ function InfiniteList({ textSearch }) {
       setLink('');
     };
   }, [link]);
-
-  useEffect(() => console.log('edit: ', edit), [edit]);
 
   const observer = useRef();
   const lastItemElement = useCallback(
@@ -84,6 +90,17 @@ function InfiniteList({ textSearch }) {
                 >
                   {item.name}
                 </a>
+                <div
+                  className='item-edit-btn'
+                  ref={editRef}
+                  onClick={
+                    (e => e.preventDefault(),
+                    () => handleEdit(item._id, item.path))
+                  }
+                  /* onClick={e => handleEditClick(e)} */
+                >
+                  Edit
+                </div>
               </div>
             );
           } else {
@@ -98,18 +115,26 @@ function InfiniteList({ textSearch }) {
                 >
                   {item.name}
                 </a>
-                {edit === true ? (
+                {/* {edit === true ? (
                   <div
                     className='item-submit-edit-btn'
+                    ref={editRef}
                     onClick={handleEditClick}
                   >
                     Submit
                   </div>
-                ) : (
-                  <div className='item-edit-btn' onClick={handleEditClick}>
-                    Edit
-                  </div>
-                )}
+                ) : ( */}
+                <div
+                  className='item-edit-btn'
+                  ref={editRef}
+                  onClick={
+                    (e => e.preventDefault(),
+                    () => handleEdit(item._id, item.path))
+                  }
+                >
+                  Edit
+                </div>
+                {/* )} */}
               </div>
             );
           }

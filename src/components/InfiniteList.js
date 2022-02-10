@@ -10,23 +10,26 @@ import '../styles/Results.css';
 function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
-  const [edits, setEdits] = useState([{ item: {} }]);
+  const [edits, setEdits] = useState([{ key: '', path: '' }]);
 
   const { loading, items, setItems, hasMore, error } = useDb(
     pageNumber,
     textSearch
   );
 
-  const handleEdit = id => {
-    items.map(item => {
-      if (item._id === id) {
-        item = { ...item, edit: true };
-        return console.log(item);
-      } else {
-        console.log('didnt work');
-        return item;
-      }
-    });
+  const handleEdit = editItem => {
+    if (edits.includes(editItem)) {
+      console.log(edits.indexOf(editItem));
+      setEdits([...edits.slice(edits.indexOf(editItem, 1))]);
+    } else {
+      setEdits(edits => [...edits, editItem]);
+    }
+
+    /* edits.map((edit, index) => {
+      console.log(edit.key === editItem.key);
+      return console.log(edit);
+    }); */
+    /* setEdits(edits => [...edits, item]); */
   };
 
   const editRef = useRef(null);
@@ -93,10 +96,7 @@ function InfiniteList({ textSearch }) {
                 <div
                   className='item-edit-btn'
                   ref={editRef}
-                  onClick={
-                    (e => e.preventDefault(),
-                    () => handleEdit(item._id, item.path))
-                  }
+                  onClick={(e => e.preventDefault(), () => handleEdit(item))}
                   /* onClick={e => handleEditClick(e)} */
                 >
                   Edit
@@ -127,10 +127,7 @@ function InfiniteList({ textSearch }) {
                 <div
                   className='item-edit-btn'
                   ref={editRef}
-                  onClick={
-                    (e => e.preventDefault(),
-                    () => handleEdit(item._id, item.path))
-                  }
+                  onClick={(e => e.preventDefault(), () => handleEdit(item))}
                 >
                   Edit
                 </div>

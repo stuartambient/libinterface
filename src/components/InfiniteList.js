@@ -10,7 +10,7 @@ import '../styles/Results.css';
 function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
   const [link, setLink] = useState('');
-  const [edits, setEdits] = useState([{ key: '', path: '' }]);
+  const [edits, setEdits] = useState([]);
 
   const { loading, items, setItems, hasMore, error } = useDb(
     pageNumber,
@@ -20,10 +20,15 @@ function InfiniteList({ textSearch }) {
   const handleEdit = editItem => {
     if (edits.includes(editItem)) {
       console.log(edits.indexOf(editItem));
-      setEdits([...edits.slice(edits.indexOf(editItem, 1))]);
+      setEdits([
+        ...edits.slice(0, edits.indexOf(editItem)),
+        ...edits.slice(edits.indexOf(editItem) + 1, edits.length),
+      ]);
     } else {
       setEdits(edits => [...edits, editItem]);
     }
+
+    // everything from 0 through index
 
     /* edits.map((edit, index) => {
       console.log(edit.key === editItem.key);
@@ -93,14 +98,21 @@ function InfiniteList({ textSearch }) {
                 >
                   {item.name}
                 </a>
-                <div
-                  className='item-edit-btn'
-                  ref={editRef}
-                  onClick={(e => e.preventDefault(), () => handleEdit(item))}
-                  /* onClick={e => handleEditClick(e)} */
-                >
-                  Edit
-                </div>
+                {edits.find(i => i.key === item.key) ? (
+                  <div
+                    className='item-edit-btn'
+                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                  >
+                    Submit
+                  </div>
+                ) : (
+                  <div
+                    className='item-edit-btn'
+                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                  >
+                    Edit
+                  </div>
+                )}
               </div>
             );
           } else {
@@ -115,23 +127,23 @@ function InfiniteList({ textSearch }) {
                 >
                   {item.name}
                 </a>
-                {/* {edit === true ? (
+                {edits.find(i => i.key === item.key) ? (
                   <div
-                    className='item-submit-edit-btn'
-                    ref={editRef}
-                    onClick={handleEditClick}
+                    id={item.key}
+                    className='item-edit-btn item-submit-btn'
+                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
                   >
                     Submit
                   </div>
-                ) : ( */}
-                <div
-                  className='item-edit-btn'
-                  ref={editRef}
-                  onClick={(e => e.preventDefault(), () => handleEdit(item))}
-                >
-                  Edit
-                </div>
-                {/* )} */}
+                ) : (
+                  <div
+                    id={item.key}
+                    className='item-edit-btn'
+                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                  >
+                    Edit
+                  </div>
+                )}
               </div>
             );
           }
@@ -139,13 +151,13 @@ function InfiniteList({ textSearch }) {
         {hasMore && (
           <>
             <div
-              className='item' /* style={{ backgroundColor: 'lightgray' }} */
+              className='item itemloading' /* style={{ backgroundColor: 'lightgray' }} */
             >
               {loading && items.length ? (
                 <div className='loading'>Loading...</div>
               ) : null}
             </div>
-            <div className='item'>{error && 'Error'}</div>
+            <div className='item itemerror'>{error && 'Error'}</div>
           </>
         )}
       </div>

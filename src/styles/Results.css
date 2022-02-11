@@ -93,3 +93,22 @@
   height: 100% !important;
   color: red;
 }
+
+.itemloading {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(16, 125, 172, 1) 25%,
+    rgba(24, 154, 211, 1) 50%,
+    rgba(113, 199, 236, 1) 100%
+  );
+}
+
+.itemerror {
+  background-color: var(--COLOR-1);
+  opacity: 0.5;
+  color: white;
+  text-align: center;
+  justify-content: center;
+}

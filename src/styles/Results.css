@@ -42,10 +42,17 @@
   border-radius: 5px;
 }
 
+.item-submit-btn {
+  background-color: white;
+  color: var(--COLOR-1);
+  align-self: center;
+}
+
 .item-edit-btn:hover {
   cursor: pointer;
   background-color: var(--COLOR-1);
   border: 1px solid black;
+  color: white;
 }
 
 .item-edit-btn:active {

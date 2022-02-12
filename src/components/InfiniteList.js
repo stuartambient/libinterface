@@ -17,7 +17,10 @@ function InfiniteList({ textSearch }) {
     textSearch
   );
 
-  const handleEdit = editItem => {
+  const handleEdit = (e, editItem) => {
+    /* const editing = items.filter(item => editItem._id === item._id); */
+    e.preventDefault();
+
     if (edits.includes(editItem)) {
       console.log(edits.indexOf(editItem));
       setEdits([
@@ -27,17 +30,12 @@ function InfiniteList({ textSearch }) {
     } else {
       setEdits(edits => [...edits, editItem]);
     }
-
-    // everything from 0 through index
-
-    /* edits.map((edit, index) => {
-      console.log(edit.key === editItem.key);
-      return console.log(edit);
-    }); */
-    /* setEdits(edits => [...edits, item]); */
   };
 
-  const editRef = useRef(null);
+  const handleOpenDirectory = e => {
+    e.preventDefault();
+    setLink(e.target.href);
+  };
 
   useEffect(() => {
     setItems([]);
@@ -89,26 +87,20 @@ function InfiniteList({ textSearch }) {
           if (items.length === index + 1) {
             return (
               <div className='item' key={item._id} ref={lastItemElement}>
-                <a
-                  href={item.path}
-                  onClick={e => {
-                    e.preventDefault();
-                    setLink(e.target.href);
-                  }}
-                >
+                <a href={item.path} onClick={e => handleOpenDirectory(e)}>
                   {item.name}
                 </a>
-                {edits.find(i => i.key === item.key) ? (
+                {edits.find(i => i._id === item._id) ? (
                   <div
                     className='item-edit-btn'
-                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                    onClick={e => handleEdit(e, item)}
                   >
                     Submit
                   </div>
                 ) : (
                   <div
                     className='item-edit-btn'
-                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                    onClick={e => handleEdit(e, item)}
                   >
                     Edit
                   </div>
@@ -118,20 +110,14 @@ function InfiniteList({ textSearch }) {
           } else {
             return (
               <div className='item' key={item._id}>
-                <a
-                  href={item.path}
-                  onClick={e => {
-                    e.preventDefault();
-                    setLink(e.target.href);
-                  }}
-                >
+                <a href={item.path} onClick={e => handleOpenDirectory(e)}>
                   {item.name}
                 </a>
-                {edits.find(i => i.key === item.key) ? (
+                {edits.find(i => i._id === item._id) ? (
                   <div
                     id={item.key}
                     className='item-edit-btn item-submit-btn'
-                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                    onClick={e => handleEdit(e, item)}
                   >
                     Submit
                   </div>
@@ -139,7 +125,7 @@ function InfiniteList({ textSearch }) {
                   <div
                     id={item.key}
                     className='item-edit-btn'
-                    onClick={(e => e.preventDefault(), () => handleEdit(item))}
+                    onClick={e => handleEdit(e, item)}
                   >
                     Edit
                   </div>
@@ -150,9 +136,7 @@ function InfiniteList({ textSearch }) {
         })}
         {hasMore && (
           <>
-            <div
-              className='item itemloading' /* style={{ backgroundColor: 'lightgray' }} */
-            >
+            <div className='item itemloading'>
               {loading && items.length ? (
                 <div className='loading'>Loading...</div>
               ) : null}

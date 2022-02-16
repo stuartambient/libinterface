@@ -87,58 +87,53 @@ function InfiniteList({ textSearch }) {
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (
-              <Item
-                className='item'
-                key={item._id}
-                forwardRef={lastItemElement}
-                item={item}
-              >
-                <Link href={item.path} onClick={e => handleOpenDirectory(e)}>
+              <div className='item' key={item._id} ref={lastItemElement}>
+                <a href={item.path} onClick={e => handleOpenDirectory(e)}>
                   {item.name}
-                </Link>
+                </a>
                 {edits.find(i => i._id === item._id) ? (
-                  <EditButton
+                  <div
                     id={item.key}
                     className='item-edit-btn item-submit-btn'
                     onClick={e => handleEdit(e, item)}
                   >
                     Submit
-                  </EditButton>
+                  </div>
                 ) : (
-                  <EditButton
+                  <div
                     id={item.key}
                     className='item-edit-btn'
                     onClick={e => handleEdit(e, item)}
                   >
                     Edit
-                  </EditButton>
+                  </div>
                 )}
-              </Item>
+              </div>
             );
           } else {
             return (
-              <Item className='item' item={item} key={item._id}>
-                <Link href={item.path} onClick={e => handleOpenDirectory(e)}>
+              <div className='item' key={item._id}>
+                <a href={item.path} onClick={e => handleOpenDirectory(e)}>
                   {item.name}
-                </Link>
+                </a>
                 {edits.find(i => i._id === item._id) ? (
-                  <EditButton
+                  <div
                     id={item.key}
                     className='item-edit-btn item-submit-btn'
                     onClick={e => handleEdit(e, item)}
                   >
                     Submit
-                  </EditButton>
+                  </div>
                 ) : (
-                  <EditButton
+                  <div
                     id={item.key}
                     className='item-edit-btn'
                     onClick={e => handleEdit(e, item)}
                   >
                     Edit
-                  </EditButton>
+                  </div>
                 )}
-              </Item>
+              </div>
             );
           }
         })}

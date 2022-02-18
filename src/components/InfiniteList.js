@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import useDb from '../hooks/useDb';
 import Loader from './loader';
-import { Item, Link, EditButton } from './ItemComponent';
+import { Item, Link, EditButton, Input } from './ItemComponent';
 
 /* import useNode from '../hooks/useNode'; */
 /* import { Results, List, ListItem, Loading } from '../components/Results'; */
@@ -97,13 +97,17 @@ function InfiniteList({ textSearch }) {
                   {item.name}
                 </Link>
                 {edits.find(i => i._id === item._id) ? (
-                  <EditButton
-                    id={item.key}
-                    className='item-edit-btn item-submit-btn'
-                    onClick={e => handleEdit(e, item)}
-                  >
-                    Submit
-                  </EditButton>
+                  <>
+                    <EditButton
+                      id={item.key}
+                      className='item-edit-btn item-submit-btn'
+                      onClick={e => handleEdit(e, item)}
+                    >
+                      Submit
+                    </EditButton>
+
+                    <Input path={item.path} className='edit-input' />
+                  </>
                 ) : (
                   <EditButton
                     id={item.key}
@@ -117,18 +121,27 @@ function InfiniteList({ textSearch }) {
             );
           } else {
             return (
-              <Item className='item' item={item} key={item._id}>
+              <Item
+                className={
+                  edits.find(i => i._id === item._id) ? 'item editmode' : 'item'
+                }
+                item={item}
+                key={item._id}
+              >
                 <Link href={item.path} onClick={e => handleOpenDirectory(e)}>
                   {item.name}
                 </Link>
                 {edits.find(i => i._id === item._id) ? (
-                  <EditButton
-                    id={item.key}
-                    className='item-edit-btn item-submit-btn'
-                    onClick={e => handleEdit(e, item)}
-                  >
-                    Submit
-                  </EditButton>
+                  <>
+                    <EditButton
+                      id={item.key}
+                      className='item-edit-btn item-submit-btn'
+                      onClick={e => handleEdit(e, item)}
+                    >
+                      Submit
+                    </EditButton>
+                    <Input path={item.path} className='edit-input' />
+                  </>
                 ) : (
                   <EditButton
                     id={item.key}

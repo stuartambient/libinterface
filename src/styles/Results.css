@@ -40,6 +40,10 @@
   background-color: var(--COLOR-3);
 }
 
+.editmode:hover {
+  background-color: var(--COLOR-1);
+}
+
 .item-edit-btn {
   background-color: white;
   align-self: center;

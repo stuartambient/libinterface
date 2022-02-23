@@ -24,8 +24,17 @@ const EditButton = ({ id, className, onClick, children }) => {
   );
 };
 
-const Input = ({ className, path }) => {
-  return <input className={className} type='text' value={path} />;
+const Input = ({ id, className, value, onChange }) => {
+  console.log('id: ', id);
+  return (
+    <input
+      id={id}
+      className={className}
+      type='text'
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export { Item, Link, EditButton, Input };

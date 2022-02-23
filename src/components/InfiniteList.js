@@ -21,9 +21,9 @@ function InfiniteList({ textSearch }) {
   const handleEdit = (e, editItem) => {
     /* const editing = items.filter(item => editItem._id === item._id); */
     e.preventDefault();
+    console.log(edits);
 
-    if (edits.includes(editItem)) {
-      console.log(edits.indexOf(editItem));
+    if (edits.find(edit => edit._id === editItem._id)) {
       setEdits([
         ...edits.slice(0, edits.indexOf(editItem)),
         ...edits.slice(edits.indexOf(editItem) + 1, edits.length),
@@ -31,6 +31,18 @@ function InfiniteList({ textSearch }) {
     } else {
       setEdits(edits => [...edits, editItem]);
     }
+  };
+
+  const handleChange = e => {
+    e.preventDefault();
+    console.log('id: ', e.target.id);
+    edits.map(edit => {
+      if (edit._id === e.target.id) {
+        return setEdits(edits => [{ ...edit, path: e.target.value }]);
+      } else {
+        return edit;
+      }
+    });
   };
 
   const handleOpenDirectory = e => {
@@ -106,7 +118,11 @@ function InfiniteList({ textSearch }) {
                       Submit
                     </EditButton>
 
-                    <Input path={item.path} className='edit-input' />
+                    <Input
+                      id={item._id}
+                      className='edit-input'
+                      onChange={handleChange}
+                    />
                   </>
                 ) : (
                   <EditButton
@@ -140,7 +156,12 @@ function InfiniteList({ textSearch }) {
                     >
                       Submit
                     </EditButton>
-                    <Input path={item.path} className='edit-input' />
+                    <Input
+                      id={item._id}
+                      className='edit-input'
+                      value={edits.find(i => i._id === item._id).path}
+                      onChange={handleChange}
+                    />
                   </>
                 ) : (
                   <EditButton

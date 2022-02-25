@@ -25,7 +25,6 @@ const EditButton = ({ id, className, onClick, children }) => {
 };
 
 const Input = ({ id, className, value, onChange }) => {
-  console.log('id: ', id);
   return (
     <input
       id={id}

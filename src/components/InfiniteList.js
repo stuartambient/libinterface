@@ -21,9 +21,10 @@ function InfiniteList({ textSearch }) {
   const handleEdit = (e, editItem) => {
     /* const editing = items.filter(item => editItem._id === item._id); */
     e.preventDefault();
-    console.log(edits);
+    const el = edits.find(edit => edit._id === editItem._id);
 
-    if (edits.find(edit => edit._id === editItem._id)) {
+    if (el) {
+      console.log('el: ', el.path);
       setEdits([
         ...edits.slice(0, edits.indexOf(editItem)),
         ...edits.slice(edits.indexOf(editItem) + 1, edits.length),
@@ -35,10 +36,12 @@ function InfiniteList({ textSearch }) {
 
   const handleChange = e => {
     e.preventDefault();
-    console.log('id: ', e.target.id);
+
     edits.map(edit => {
       if (edit._id === e.target.id) {
-        return setEdits(edits => [{ ...edit, path: e.target.value }]);
+        edit.path = e.target.value;
+
+        return setEdits(edits => [...edits]);
       } else {
         return edit;
       }

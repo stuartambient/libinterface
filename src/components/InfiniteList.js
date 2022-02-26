@@ -24,12 +24,28 @@ function InfiniteList({ textSearch }) {
     const el = edits.find(edit => edit._id === editItem._id);
 
     if (el) {
-      console.log('el: ', el.path);
-      setEdits([
+      console.log('el: ', el.path, el.og);
+      const config = { from: el.og, to: el.path };
+
+      axios({
+        method: 'POST',
+        url: `http://localhost:3001/api/v1/library/music/changePath/`,
+        data: config,
+      })
+        .then(res => console.log('res: ', res))
+        .then(
+          setEdits([
+            ...edits.slice(0, edits.indexOf(editItem)),
+            ...edits.slice(edits.indexOf(editItem) + 1, edits.length),
+          ])
+        );
+
+      /* setEdits([
         ...edits.slice(0, edits.indexOf(editItem)),
         ...edits.slice(edits.indexOf(editItem) + 1, edits.length),
-      ]);
+      ]); */
     } else {
+      editItem.og = editItem.path;
       setEdits(edits => [...edits, editItem]);
     }
   };
@@ -124,6 +140,7 @@ function InfiniteList({ textSearch }) {
                     <Input
                       id={item._id}
                       className='edit-input'
+                      value={edits.find(i => i._id === item._id).path}
                       onChange={handleChange}
                     />
                   </>

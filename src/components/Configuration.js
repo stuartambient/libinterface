@@ -1,16 +1,9 @@
 import React from 'react';
 import '../styles/Configuration.css';
 
-function Configuration() {
-  return (
-    <div className='configure'>
-      <form className='configure-form'>
-        <label htmlFor='current-locations'>
-          <input type='checkbox' id='current-locations' />
-        </label>
-      </form>
-    </div>
-  );
+function Configuration({ updateResults }) {
+  console.log('ur: ', updateResults);
+  return <div className='configure'></div>;
 }
 
 export default Configuration;

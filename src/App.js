@@ -13,6 +13,7 @@ const App = () => {
     isSearch: false,
     isConfig: false,
     textsearch: '',
+    updateResults: {},
   });
 
   /*  const [scanPath, setScanPath] = useState(null); */
@@ -32,7 +33,9 @@ const App = () => {
           {main.isSearch === true && (
             <InfiniteList textSearch={main.textsearch} />
           )}
-          {main.isConfig === true && <Configuration />}
+          {main.isConfig === true && (
+            <Configuration updateResults={main.updateResults} />
+          )}
         </div>
       </div>
     </>

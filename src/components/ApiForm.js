@@ -15,8 +15,7 @@ const ApiForm = ({ appState, setAppState }) => {
   // opens and closes the full menu
   const [preferences, openPreferences] = useState(false);
   // configure and collect paths
-  const { setPaths, invalid, confirmed, setRequestCurrentPaths, current } =
-    usePaths();
+  const { response, setPaths, setRequestCurrentPaths } = usePaths();
 
   // setup form from usePaths()
   useEffect(() => {
@@ -24,6 +23,19 @@ const ApiForm = ({ appState, setAppState }) => {
       setRequestCurrentPaths(true);
     }
   }, [form, setRequestCurrentPaths]);
+
+  useEffect(() => {
+    if (response) {
+      /* console.log('response: ', response); */
+      setAppState(appState => ({
+        ...appState,
+        /* isSearch: false,
+        isConfig: true,
+        textsearch: '', */
+        updateResults: response,
+      }));
+    }
+  }, [response, setAppState]);
 
   // element values
   const formReducer = (state, newState) => {
@@ -80,6 +92,8 @@ const ApiForm = ({ appState, setAppState }) => {
 
   const handleUpdateSubmit = e => {
     e.preventDefault();
+    console.log(formValues.paths);
+    /*     if (!e.target.value) return console.log('no value: ', e.target.value); */
     if (formValues.paths === '') return;
     const pathsArray = formValues.paths.split(',');
     const trimmed = pathsArray.map(path => path.trimStart());

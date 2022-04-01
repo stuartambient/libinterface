@@ -9,4 +9,10 @@
   height: 90%;
   width: 90%;
   align-self: center;
+  padding: 0.5em;
+}
+
+.update-results {
+  list-style-type: none;
+  color: white;
 }

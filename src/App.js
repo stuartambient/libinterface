@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import ApiForm from './components/ApiForm';
 import InfiniteList from './components/InfiniteList';

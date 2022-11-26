@@ -1,17 +1,21 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import axios from 'axios';
-import useDb from '../hooks/useDb';
-import Loader from './loader';
-import { Item, Link, EditButton, Input } from './ItemComponent';
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import axios from "axios";
+import useDb from "../hooks/useDb";
+import Loader from "./loader";
+import { Item, Link, EditButton, Input } from "./ItemComponent";
 
 /* import useNode from '../hooks/useNode'; */
 /* import { Results, List, ListItem, Loading } from '../components/Results'; */
-import '../styles/Results.css';
+import "../styles/Results.css";
 
 function InfiniteList({ textSearch }) {
   const [pageNumber, setPageNumber] = useState(0);
-  const [link, setLink] = useState('');
+  const [link, setLink] = useState("");
   const [edits, setEdits] = useState([]);
+
+  useEffect(() => {
+    console.log("PN: ", pageNumber);
+  }, [pageNumber]);
 
   const { loading, items, setItems, hasMore, error } = useDb(
     pageNumber,
@@ -24,15 +28,15 @@ function InfiniteList({ textSearch }) {
     const el = edits.find(edit => edit._id === editItem._id);
 
     if (el) {
-      console.log('el: ', el.path, el.og);
+      console.log("el: ", el.path, el.og);
       const config = { from: el.og, to: el.path };
 
       axios({
-        method: 'POST',
+        method: "POST",
         url: `http://localhost:3001/api/v1/library/music/changePath/`,
         data: config,
       })
-        .then(res => console.log('res: ', res))
+        .then(res => console.log("res: ", res))
         .then(
           setEdits([
             ...edits.slice(0, edits.indexOf(editItem)),
@@ -69,20 +73,20 @@ function InfiniteList({ textSearch }) {
     setLink(e.target.href);
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setItems([]);
-  }, [textSearch, setItems]);
+  }, [textSearch, setItems]); */
 
   useEffect(() => {
     if (link)
       axios({
-        method: 'GET',
+        method: "GET",
         url: `http://localhost:3001/api/v1/library/music/openWinFolder/`,
         params: { link: link },
       }).then(res => console.log(res));
 
     return () => {
-      setLink('');
+      setLink("");
     };
   }, [link]);
 
@@ -97,7 +101,7 @@ function InfiniteList({ textSearch }) {
             setPageNumber(prevPageNumber => prevPageNumber + 1);
           }
         },
-        { root: document.querySelector('.results') }
+        { root: document.querySelector(".results") }
       );
       if (node) observer.current.observe(node);
     },
@@ -106,32 +110,35 @@ function InfiniteList({ textSearch }) {
 
   return (
     <>
-      <div className='results'>
+      <div className="results">
         {loading && (
-          <div className='loader-flex'>
+          <div className="loader-flex">
             <Loader />
           </div>
         )}
         {!items.length && !loading ? (
-          <div className='no-results'>No results</div>
+          <div className="no-results">No results</div>
         ) : null}
         {items.map((item, index) => {
           if (items.length === index + 1) {
             return (
               <Item
-                className='item'
+                className="item"
                 key={item._id}
                 forwardRef={lastItemElement}
                 item={item}
               >
-                <Link href={item.path} onClick={e => handleOpenDirectory(e)}>
-                  {item.name}
+                <Link
+                  href={item.fullpath}
+                  onClick={e => handleOpenDirectory(e)}
+                >
+                  {item.foldername}
                 </Link>
                 {edits.find(i => i._id === item._id) ? (
                   <>
                     <EditButton
                       id={item.key}
-                      className='item-edit-btn item-submit-btn'
+                      className="item-edit-btn item-submit-btn"
                       onClick={e => handleEdit(e, item)}
                     >
                       Submit
@@ -139,15 +146,15 @@ function InfiniteList({ textSearch }) {
 
                     <Input
                       id={item._id}
-                      className='edit-input'
-                      value={edits.find(i => i._id === item._id).path}
+                      className="edit-input"
+                      value={edits.find(i => i._id === item._id).fullpath}
                       onChange={handleChange}
                     />
                   </>
                 ) : (
                   <EditButton
                     id={item.key}
-                    className='item-edit-btn'
+                    className="item-edit-btn"
                     onClick={e => handleEdit(e, item)}
                   >
                     Edit
@@ -159,34 +166,37 @@ function InfiniteList({ textSearch }) {
             return (
               <Item
                 className={
-                  edits.find(i => i._id === item._id) ? 'item editmode' : 'item'
+                  edits.find(i => i._id === item._id) ? "item editmode" : "item"
                 }
                 item={item}
                 key={item._id}
               >
-                <Link href={item.path} onClick={e => handleOpenDirectory(e)}>
-                  {item.name}
+                <Link
+                  href={item.fullpath}
+                  onClick={e => handleOpenDirectory(e)}
+                >
+                  {item.foldername}
                 </Link>
                 {edits.find(i => i._id === item._id) ? (
                   <>
                     <EditButton
                       id={item.key}
-                      className='item-edit-btn item-submit-btn'
+                      className="item-edit-btn item-submit-btn"
                       onClick={e => handleEdit(e, item)}
                     >
                       Submit
                     </EditButton>
                     <Input
                       id={item._id}
-                      className='edit-input'
-                      value={edits.find(i => i._id === item._id).path}
+                      className="edit-input"
+                      value={edits.find(i => i._id === item._id).fullpath}
                       onChange={handleChange}
                     />
                   </>
                 ) : (
                   <EditButton
                     id={item.key}
-                    className='item-edit-btn'
+                    className="item-edit-btn"
                     onClick={e => handleEdit(e, item)}
                   >
                     Edit
@@ -198,12 +208,12 @@ function InfiniteList({ textSearch }) {
         })}
         {hasMore && (
           <>
-            <div className='item itemloading'>
+            <div className="item itemloading">
               {loading && items.length ? (
-                <div className='loading'>Loading...</div>
+                <div className="loading">Loading...</div>
               ) : null}
             </div>
-            <div className='item itemerror'>{error && 'Error'}</div>
+            <div className="item itemerror">{error && "Error"}</div>
           </>
         )}
       </div>
